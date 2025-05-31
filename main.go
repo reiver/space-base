@@ -28,6 +28,7 @@ func main() {
 		fmt.Printf("ERROR: could not successfully dial UDP address %v: %s", &multicastUDPAddress, err)
 		return
 	}
+	defer udpConn.Close()
 	fmt.Println("Connected!")
 
 	localAddr := udpConn.LocalAddr()
