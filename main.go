@@ -13,6 +13,7 @@ func main() {
 	defer log.End()
 
 	log.Inform("space-base ⚡")
+	blur()
 
 	beacon()
 
