@@ -23,7 +23,7 @@ func beaconUDPPort() (uint16, error) {
 			const bitSize = 16
 			u64, err := strconv.ParseUint(envvalue, base, bitSize)
 			if nil != err {
-				return value, erorr.Errorf("problem parsing value of %q environment variable: %w", envname, err)
+				return value, erorr.Errorf("problem parsing value of %q environment variable (%q) as a %d-bit base-%d unsigned-integer: %w", envname, envvalue, bitSize, base, err)
 			}
 
 			value = uint16(u64)
