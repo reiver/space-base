@@ -12,8 +12,8 @@ func main() {
 	blur()
 
 	log.Inform("A daemon will be spawned…")
-	daemon()
+	daemonTCPAddress := daemon()
 
 	log.Inform("I will let SPACE-COMMAND know we are here…")
-	beacon()
+	beacon(daemonTCPAddress)
 }

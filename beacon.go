@@ -11,7 +11,7 @@ import (
 	"github.com/reiver/space-base/srv/log"
 )
 
-func beacon() {
+func beacon(wwwDaemonTCPAddress string) {
 
 	log := logsrv.Prefix("beacon").Begin()
 	defer log.End()
@@ -30,7 +30,7 @@ func beacon() {
 
 		spaceBeaconMulticastIPAddress = value
 	}
-	log.Informf("SPACE-BEACON multicast ip-address: %v", spaceBeaconMulticastIPAddress)
+	log.Informf("SPACE-BEACON multicast IP-address: %v", spaceBeaconMulticastIPAddress)
 
 	var spaceBeaconUDPPort uint16
 	{
@@ -48,10 +48,10 @@ func beacon() {
 	}
 	log.Informf("SPACE-BEACON UDP port: %v (0x%X)", spaceBeaconUDPPort, spaceBeaconUDPPort)
 
-	_beacon(spaceBeaconMulticastIPAddress, spaceBeaconUDPPort)
+	_beacon(spaceBeaconMulticastIPAddress, spaceBeaconUDPPort, wwwDaemonTCPAddress)
 }
 
-func _beacon(mutlicastIPAddress net.IP, udpPort uint16) {
+func _beacon(mutlicastIPAddress net.IP, udpPort uint16, wwwDaemonTCPAddress string) {
 
 	log := logsrv.Prefix("_beacon").Begin()
 	defer log.End()
@@ -90,14 +90,17 @@ func _beacon(mutlicastIPAddress net.IP, udpPort uint16) {
 
 			msg = append(msg, spacebeacon.Magic...)
 			msg = append(msg, "DOROOD\n"...)
+			msg = append(msg, wwwDaemonTCPAddress...)
+			msg = append(msg, '\n')
 			msg = append(msg, '\n')
 
+			log.Debug("Sending message to SPACE-COMMAND…")
 			_, err := udpConn.Write(msg)
 			if nil != err {
 				log.Errorf("ERROR: problem writing message #%d: %s", 1+i, err)
 				continue
 			}
-			log.Debugf("Wrote message #%d", 1+i)
+			log.Debugf("Message #%d sent!", 1+i)
 
 			var sleepDuration time.Duration = baseSleepDuration + (time.Millisecond * time.Duration(rand.Int63n(3555)))
 			log.Debugf("Will sleep for %v", sleepDuration)
