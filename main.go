@@ -1,10 +1,6 @@
 package main
 
 import (
-	"net"
-	"os"
-
-	"github.com/reiver/space-base/env"
 	"github.com/reiver/space-base/srv/log"
 )
 
@@ -15,23 +11,9 @@ func main() {
 	log.Inform("space-base ⚡")
 	blur()
 
+	log.Inform("A daemon will be spawned…")
+	daemon()
+
 	log.Inform("I will let SPACE-COMMAND know we are here…")
 	beacon()
-
-	var daemonIPAddress net.IP
-	{
-		const envname = env.DaemonIPAddressEnvName
-		log.Informf("Note that, the WWW-DAEMON IP-address can be set by using the %q environment-variable.", envname)
-
-		value, err := env.DaemonIPAddress()
-		if nil != err {
-			log.Errorf("ERROR: value of %q environment-variable invalid: %s", envname, err)
-			os.Exit(1)
-			return
-		}
-
-		daemonIPAddress = value
-	}
-	log.Informf("WWW-DAEMON ip-address: %v", daemonIPAddress)
-
 }
