@@ -22,6 +22,7 @@ func main() {
 		if nil != err {
 			fmt.Printf("ERROR: value of %q environment-variable invalid: %s\n", envname, err)
 			os.Exit(1)
+			return
 		}
 
 
@@ -38,6 +39,7 @@ func main() {
 		if nil != err {
 			fmt.Printf("ERROR: value of %q environment-variable invalid: %s\n", envname, err)
 			os.Exit(1)
+			return
 		}
 
 		spaceBeaconUDPPort = value
@@ -53,6 +55,7 @@ func main() {
 	udpConn, err := net.DialUDP("udp", nil, &multicastUDPAddress)
 	if nil != err {
 		fmt.Printf("ERROR: could not successfully dial UDP address %v: %s", &multicastUDPAddress, err)
+		os.Exit(1)
 		return
 	}
 	defer udpConn.Close()
@@ -61,6 +64,7 @@ func main() {
 	localAddr := udpConn.LocalAddr()
 	if nil == localAddr {
 		fmt.Printf("ERROR: could not get UDP local-address: %s\n", err)
+		os.Exit(1)
 		return
 	}
 
