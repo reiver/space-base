@@ -44,7 +44,6 @@ func main() {
 	}
 	fmt.Printf("SPACE-BEACON UDP port: %v (0x%X)\n", spaceBeaconUDPPort, spaceBeaconUDPPort)
 
-
 	var multicastUDPAddress = net.UDPAddr{
 		IP: spaceBeaconMulticastIPAddress,
 		Port: int(spaceBeaconUDPPort),
