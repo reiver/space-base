@@ -14,37 +14,22 @@ func main() {
 
 	log.Inform("space-base ⚡")
 
-	var spaceBeaconMulticastIPAddress net.IP
-	{
-		const envname = env.BeaconMulticastIPAddressEnvName
-		log.Informf("Note that, the SPACE-BEACON multicast IP-address can be set by using the %q environment-variable.", envname)
+	beacon()
 
-		value, err := env.BeaconMulticastIPAddress()
+	var daemonIPAddress net.IP
+	{
+		const envname = env.DaemonIPAddressEnvName
+		log.Informf("Note that, the WWW-DAEMON IP-address can be set by using the %q environment-variable.", envname)
+
+		value, err := env.DaemonIPAddress()
 		if nil != err {
 			log.Errorf("ERROR: value of %q environment-variable invalid: %s", envname, err)
 			os.Exit(1)
 			return
 		}
 
-		spaceBeaconMulticastIPAddress = value
+		daemonIPAddress = value
 	}
-	log.Informf("SPACE-BEACON multicast ip-address: %v", spaceBeaconMulticastIPAddress)
+	log.Informf("WWW-DAEMON ip-address: %v", daemonIPAddress)
 
-	var spaceBeaconUDPPort uint16
-	{
-		const envname = env.BeaconUDPPortEnvName
-		log.Informf("Note that, the SPACE-BEACON UDP-port number can be set by using the %q environment-variable.", envname)
-
-		value, err := env.BeaconUDPPort()
-		if nil != err {
-			log.Errorf("ERROR: value of %q environment-variable invalid: %s", envname, err)
-			os.Exit(1)
-			return
-		}
-
-		spaceBeaconUDPPort = value
-	}
-	log.Informf("SPACE-BEACON UDP port: %v (0x%X)", spaceBeaconUDPPort, spaceBeaconUDPPort)
-
-	beacon(spaceBeaconMulticastIPAddress, spaceBeaconUDPPort)
 }
