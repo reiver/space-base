@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"net"
 	"os"
 	"time"
@@ -71,8 +72,7 @@ func main() {
 		var buffer [spacebeacon.MaxLength]byte
 
 		const limit = 10
-		const sleepDuration = 5 * time.Second
-
+		const baseSleepDuration = 2 * time.Second
 
 		for i:=0; i<limit; i++ {
 
@@ -87,6 +87,9 @@ func main() {
 				continue
 			}
 			fmt.Printf("Wrote message #%d\n", 1+i)
+
+			var sleepDuration time.Duration = baseSleepDuration + (time.Millisecond * time.Duration(rand.Int63n(3555)))
+			fmt.Printf("Will sleep for %v\n", sleepDuration)
 
 			time.Sleep(sleepDuration)
 		}
