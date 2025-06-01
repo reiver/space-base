@@ -25,7 +25,6 @@ func main() {
 			return
 		}
 
-
 		spaceBeaconMulticastIPAddress = value
 	}
 	fmt.Printf("SPACE-BEACON multicast ip-address: %v\n", spaceBeaconMulticastIPAddress)
