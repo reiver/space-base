@@ -42,7 +42,7 @@ func init() {
 	 _beaconUDPPort, _beaconUDPPortError = beaconUDPPort()
 }
 
-// BeaconUDPPort returns the UDP-port that the HTTP server should use.
+// BeaconUDPPort returns the UDP-port that the SPACE-BASE should use.
 //
 // It defaults to UDP-port 21328 (0x5350).
 //
