@@ -28,6 +28,9 @@ func beaconMulticastIPAddress() (net.IP, error) {
 		}
 	}
 
+	if nil == value {
+		return value, erorr.Error("nil IP-address")
+	}
 	return value, nil
 }
 
