@@ -15,6 +15,7 @@ func main() {
 	log.Inform("space-base ⚡")
 	blur()
 
+	log.Inform("I will let SPACE-COMMAND know we are here…")
 	beacon()
 
 	var daemonIPAddress net.IP
