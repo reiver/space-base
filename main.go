@@ -4,22 +4,21 @@ import (
 	"fmt"
 	"net"
 	"time"
+
+	"github.com/reiver/space-base/lib/beacon"
 )
 
 func main() {
 	fmt.Println("space-base ⚡")
 
-	// 239.83.80.67 (0xEF535043)
-	var multicastIPAddress net.IP = net.IPv4(239, 'S', 'P', 'C')
+	var multicastIPAddress net.IP = spacebeacon.MulticastIPAddress()
 	fmt.Printf("multicast ip-address: %v\n", multicastIPAddress)
 
-	// 21328 (0x5350)
-	var udpPort uint16 = (uint16('S') << 8) | uint16('P')
-	fmt.Printf("UDP port: %v (0x%X)\n", udpPort, udpPort)
+	fmt.Printf("UDP port: %v (0x%X)\n", spacebeacon.UDPPort, spacebeacon.UDPPort)
 
 	var multicastUDPAddress = net.UDPAddr{
 		IP: multicastIPAddress,
-		Port: int(udpPort),
+		Port: int(spacebeacon.UDPPort),
 	}
 	fmt.Printf("UDP address: %v\n", &multicastUDPAddress)
 
@@ -38,7 +37,7 @@ func main() {
 	}
 
 	{
-		var buffer [508]byte
+		var buffer [spacebeacon.MaxLength]byte
 
 		const limit = 10
 		const sleepDuration = 5 * time.Second
@@ -48,7 +47,8 @@ func main() {
 
 			var msg []byte = buffer[0:0]
 
-			msg = append(msg, "SPACE/1.0\nDOROOD\n\n"...)
+			msg = append(msg, spacebeacon.Magic...)
+			msg = append(msg, "DOROOD\n\n"...)
 
 			_, err := udpConn.Write(msg)
 			if nil != err {
