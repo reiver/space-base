@@ -1,47 +1,50 @@
 package main
 
 import (
-	"fmt"
 	"net"
 	"os"
 
 	"github.com/reiver/space-base/env"
+	"github.com/reiver/space-base/srv/log"
 )
 
 func main() {
-	fmt.Println("space-base ⚡")
+	log := logsrv.Prefix("main").Begin()
+	defer log.End()
+
+	log.Inform("space-base ⚡")
 
 	var spaceBeaconMulticastIPAddress net.IP
 	{
 		const envname = env.BeaconMulticastIPAddressEnvName
-		fmt.Printf("Note that, the SPACE-BEACON multicast IP-address can be set by using the %q environment-variable.\n", envname)
+		log.Informf("Note that, the SPACE-BEACON multicast IP-address can be set by using the %q environment-variable.", envname)
 
 		value, err := env.BeaconMulticastIPAddress()
 		if nil != err {
-			fmt.Printf("ERROR: value of %q environment-variable invalid: %s\n", envname, err)
+			log.Errorf("ERROR: value of %q environment-variable invalid: %s", envname, err)
 			os.Exit(1)
 			return
 		}
 
 		spaceBeaconMulticastIPAddress = value
 	}
-	fmt.Printf("SPACE-BEACON multicast ip-address: %v\n", spaceBeaconMulticastIPAddress)
+	log.Informf("SPACE-BEACON multicast ip-address: %v", spaceBeaconMulticastIPAddress)
 
 	var spaceBeaconUDPPort uint16
 	{
 		const envname = env.BeaconUDPPortEnvName
-		fmt.Printf("Note that, the SPACE-BEACON UDP-port number can be set by using the %q environment-variable.\n", envname)
+		log.Informf("Note that, the SPACE-BEACON UDP-port number can be set by using the %q environment-variable.", envname)
 
 		value, err := env.BeaconUDPPort()
 		if nil != err {
-			fmt.Printf("ERROR: value of %q environment-variable invalid: %s\n", envname, err)
+			log.Errorf("ERROR: value of %q environment-variable invalid: %s", envname, err)
 			os.Exit(1)
 			return
 		}
 
 		spaceBeaconUDPPort = value
 	}
-	fmt.Printf("SPACE-BEACON UDP port: %v (0x%X)\n", spaceBeaconUDPPort, spaceBeaconUDPPort)
+	log.Informf("SPACE-BEACON UDP port: %v (0x%X)", spaceBeaconUDPPort, spaceBeaconUDPPort)
 
 	beacon(spaceBeaconMulticastIPAddress, spaceBeaconUDPPort)
 }
