@@ -89,7 +89,7 @@ func _beacon(mutlicastIPAddress net.IP, udpPort uint16, wwwDaemonTCPAddress stri
 			var msg []byte = buffer[0:0]
 
 			msg = append(msg, spacebeacon.Magic...)
-			msg = append(msg, spacebeacon.QueryDorood...)
+			msg = append(msg, spacebeacon.ShoutDorood...)
 			msg = append(msg, '\n')
 			msg = append(msg, wwwDaemonTCPAddress...)
 			msg = append(msg, '\n')
